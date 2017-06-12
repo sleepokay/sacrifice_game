@@ -1,16 +1,43 @@
+var grain;
+var population;
+var slaves;
+
+var sun;
+var rain;
+var war;
+var chance;
+var foodProduction;
+
+var delta;
+
 $(document).ready( function() {
-	var width = window.innerWidth;
-	var height = window.innerHeight;
+	// window.innerWidth;
+	// window.innerHeight;
+	grain = 50;
+	people = 200;
+	slaves = 0;
+	delta = Date.now();
+	foodProduction = 1;
 
-	//var canvas = document.getElementById("gods");
-	//var ctx = canvas.getContext("2d");
+	chance = [-1, 1];
 
-	/*
-	ctx.beginPath();
-	ctx.rect(20, 40, 50, 50);
-	ctx.rect(100, 40, 50, 50);
-	ctx.strokeStyle = "rgba(0, 0, 0, 1.0)";
-	ctx.stroke();
-	ctx.closePath();
-	*/
+	window.setInterval( function() {
+		draw();
+	}, 100);
 });
+
+function draw() {
+	update();
+}
+
+function update() {
+	var timeElapsed = Date.now() - delta;
+	delta = Date.now();
+	$('#main').html("Time: " + timeElapsed);
+
+
+	$('#people').html("People: " + people);
+	$('#slaves').html("Slaves: " + slaves);
+	$('#grain').html("Grain: " + grain);
+	
+}
