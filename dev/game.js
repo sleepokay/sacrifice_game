@@ -20,6 +20,8 @@ $(document).ready( function() {
 
 function newGame() {
 	player = new Player();
+	player.initialize();
+
 	timeElapsed = 0;
 	year = 1;
 	month = 0;
@@ -58,20 +60,14 @@ function update() {
 	timeElapsed += delta;
 
 	if (timeElapsed % monthLength == 0) {
-		month++;
-		timeElapsed -= monthLength;
+		player.update();
 		
+		month++;
+		timeElapsed = 0;
+
 		if (month % yearLength == 0) {
 			year++;
 			month = 0;
-		}
-	}
-}
-
-function updateYear() {
-	for (var key in player.population) {
-		for (var p in player.population[key]) {
-			;
 		}
 	}
 }
