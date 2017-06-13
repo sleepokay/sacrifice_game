@@ -7,17 +7,12 @@ var rain;
 var chance = [-1, 1];
 
 // time variables
-var delta = 100; // in milliseconds
+const yearLength = 12; // in months
+const monthLength = 1000; // in milliseconds
+const delta = 100; // in milliseconds: how often update gets called
 var timeElapsed;
 var year;
 var season;
-
-const yearLength = 12000;
-const MONTHS = ["Ixo", "Nexo", "Sah", "Shodo", "Goru", "Loxu", "Xin", "Bah", "Noru", "Jio", "Jixo", "Jinx"];
-const SEASONS = ["spring", "spring", "spring", 
-					"summer", "summer", "summer", 
-					"fall", "fall", "fall",
-					"winter", "winter", "winter"];
 
 $(document).ready( function() {
 	newGame();
@@ -27,6 +22,7 @@ function newGame() {
 	player = new Player();
 	timeElapsed = 0;
 	year = 1;
+	month = 0;
 	
 	window.setInterval( function() {
 		draw();
@@ -37,27 +33,45 @@ function draw() {
 	update();
 
 	var stats = "";
-	stats += "Time Elapsed: " + timeElapsed;
+
+	// environment stats
+	stats = "Sun: ";
+	stats += "Rain: ";
+
+
+	// time stats
+	stats = "Time Elapsed: " + timeElapsed;
 	stats += "<br>Year: " + year;
-	stats += "<br>Month " + (season+1) + ": " + MONTHS[season];
-	stats += "<br>Season: " + SEASONS[season];
-	$('#environment').html(stats);
+	stats += "<br>Month " + (month+1);
+	$('#time').html(stats);
 
+	// population stats
 	stats = "Population: " + player.popCount();
-
 	for (var key in player.population) {
 		stats += "<br>" + key + ": " + player.population[key].length;
 	}
-
+	stats += "<br><br>Grain: " + player.grain;
 	$('#population').html(stats);
 }
 
 function update() {
 	timeElapsed += delta;
 
-	if (timeElapsed % yearLength == 0)
-		year++;
-	if (timeElapsed > yearLength)
-		timeElapsed -= yearLength;
-	season = Math.floor(timeElapsed%yearLength/1000);
+	if (timeElapsed % monthLength == 0) {
+		month++;
+		timeElapsed -= monthLength;
+		
+		if (month % yearLength == 0) {
+			year++;
+			month = 0;
+		}
+	}
+}
+
+function updateYear() {
+	for (var key in player.population) {
+		for (var p in player.population[key]) {
+			;
+		}
+	}
 }

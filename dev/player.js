@@ -41,10 +41,22 @@ class Player {
 		}
 		return count;
 	}
+
+	update() {
+		for (var key in temp) {
+			console.log(key);
+			for (var p in distribution[key]) {
+				p.update();
+			}
+		}
+	}
+	
 }
 
 class Person {
 	constructor(type) {
+		this.type = type;
+
 		var range = [];
 
 		if (type == "children")
@@ -58,5 +70,8 @@ class Person {
 
 	isChild() {
 		return this.age < 13;
+	}
+
+	update() {
 	}
 }
