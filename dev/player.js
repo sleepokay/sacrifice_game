@@ -1,9 +1,12 @@
-function Player() {
-	this.grain = 100;
-	this.productivity = 1;
-	this.population = {};
+class Player {
 
-	this.initialize = function(size) {
+	constructor() {
+		this.grain = 100;
+		this.productivity = 1;
+		this.population = {};
+	}
+
+	initialize(size) {
 		// temporary: should find better way to represent 
 		// population/age structure for easier sampling
 		var distribution = {"children": 6,
@@ -29,11 +32,10 @@ function Player() {
 					temp[key].push(new Person(key));
 			}
 		}
-
 		this.population = temp;
 	}
 
-	this.popCount = function() {
+	popCount() {
 		var count = 0;
 		for (var key in this.population) {
 			count += this.population[key].length;
@@ -41,7 +43,7 @@ function Player() {
 		return count;
 	}
 
-	this.update = function() {
+	update() {
 		for (var key in player.population) {
 			for (var i = 0; i < player.population[key].length; i++) {
 				player.population[key][i].update();
@@ -50,10 +52,13 @@ function Player() {
 	}
 }
 
-function Person(type) {
-	this.type = type;
+class Person {
 
-	this.initializeAge = function() {
+	constructor(type) {
+		this.type = type;
+	}
+
+	initialize() {
 		var range = [];
 		if (type == "children")
 			range = [0, 13];
@@ -62,34 +67,26 @@ function Person(type) {
 		else
 			range = [13, 50];
 
-		return Math.floor(Math.random() * (range[1] - range[0]) + range[0]);
+		this.age = Math.floor(Math.random() * (range[1] - range[0]) + range[0]);
 	}
 
-	this.age = this.initializeAge();
-
-	this.isChild = function() {
+	isChild() {
 		return this.age < 13;
 	}
-}
-	Person.prototype.update = function() {
-		if (this.type == "mothers")
-			;
-	}
 
-function Mother() {
-	Person.call(this, "mothers");
-	this.pregnancy = -1;
-
-	this.update = function() {
-		Person.prototype.update.call(this);
-		
-		if (pregnancy != -1) {
-			pregnancy++;
-
-			if (pregnancy > 9) {
-				;
-			}
-		}
+	update() {
 	}
 }
-Mother.prototype = new Person();
+
+class Mother extends Person{
+
+	constructor() {
+		super("mothers");
+		this.pregnancy = -1;
+	}
+
+	update() {
+		super.update();
+
+	}
+}

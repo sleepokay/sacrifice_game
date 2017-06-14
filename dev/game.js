@@ -4,7 +4,7 @@ var player;
 // environmental variables
 var sun;
 var rain;
-var chance = [-1, 1];
+var chance;
 
 // time variables
 const yearLength = 12; // in months
@@ -15,12 +15,16 @@ var year;
 var season;
 
 $(document).ready( function() {
-	newGame();
+	new Game().run();
 });
 
 function newGame() {
 	player = new Player();
 	player.initialize();
+
+	sun = 0;
+	rain = 0;
+	chance = [-1, 1];
 
 	timeElapsed = 0;
 	year = 1;
@@ -37,9 +41,11 @@ function draw() {
 	var stats = "";
 
 	// environment stats
-	stats = "Sun: ";
-	stats += "Rain: ";
+	stats = "Sun: " + sun;
+	stats += "<br>Rain: " + rain;
+	stats += "<br>Chance: [" + chance[0] + ", " + chance[1] + "]";
 
+	$('#environment').html(stats);
 
 	// time stats
 	stats = "Time Elapsed: " + timeElapsed;
@@ -48,11 +54,10 @@ function draw() {
 	$('#time').html(stats);
 
 	// population stats
-	stats = "Population: " + player.popCount();
+	stats = "Population: " + player.popCount() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Grain: " + player.grain;;
 	for (var key in player.population) {
 		stats += "<br>" + key + ": " + player.population[key].length;
 	}
-	stats += "<br><br>Grain: " + player.grain;
 	$('#population').html(stats);
 }
 
