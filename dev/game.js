@@ -1,78 +1,81 @@
-// player contains the variables related to population
-var player;
-
-// environmental variables
-var sun;
-var rain;
-var chance;
-
-// time variables
+const monthLength = 1000; // in real-time units (milliseconds)
 const yearLength = 12; // in months
-const monthLength = 1000; // in milliseconds
-const delta = 100; // in milliseconds: how often update gets called
-var timeElapsed;
-var year;
-var season;
 
-$(document).ready( function() {
-	new Game().run();
-});
+class Game {
 
-function newGame() {
-	player = new Player();
-	player.initialize();
+	constructor() {
+		this.sun = 0;
+		this.rain = 0;
+		this.chance = [-1, 1];
 
-	sun = 0;
-	rain = 0;
-	chance = [-1, 1];
+		this.grain = 100;
+		this.productivity = 1;
+		this.population = this.newPop();
 
-	timeElapsed = 0;
-	year = 1;
-	month = 0;
-	
-	window.setInterval( function() {
-		draw();
-	}, delta);
-}
+		this.timeElapsed = 0;
+		this.month = 0;
+		this.year = 1;
 
-function draw() {
-	update();
-
-	var stats = "";
-
-	// environment stats
-	stats = "Sun: " + sun;
-	stats += "<br>Rain: " + rain;
-	stats += "<br>Chance: [" + chance[0] + ", " + chance[1] + "]";
-
-	$('#environment').html(stats);
-
-	// time stats
-	stats = "Time Elapsed: " + timeElapsed;
-	stats += "<br>Year: " + year;
-	stats += "<br>Month " + (month+1);
-	$('#time').html(stats);
-
-	// population stats
-	stats = "Population: " + player.popCount() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Grain: " + player.grain;;
-	for (var key in player.population) {
-		stats += "<br>" + key + ": " + player.population[key].length;
 	}
-	$('#population').html(stats);
-}
 
-function update() {
-	timeElapsed += delta;
+	update(delta) {
+		this.timeElapsed += delta;
 
-	if (timeElapsed % monthLength == 0) {
-		player.update();
-		
-		month++;
-		timeElapsed = 0;
+		if (this.timeElapsed % monthLength == 0) {
+			this.updatePop();
+			
+			this.month++;
+			this.timeElapsed = 0;
 
-		if (month % yearLength == 0) {
-			year++;
-			month = 0;
+			if (this.month % yearLength == 0) {
+				this.year++;
+				this.month = 0;
+			}
 		}
+	}
+
+	updatePop() {
+		for (var key in this.population) {
+			for (var i = 0; i < this.population[key].length; i++) {
+				this.population[key][i].update();
+			}
+		}
+	}
+
+	newPop() {
+		// temporary: should find better way to represent 
+		// population/age structure for easier sampling
+		var distribution = {"children": 6,
+							"warriors": 10,
+							"farmers": 21,
+							"mothers": 6,
+							"maidens": 4,
+							"elders": 3}
+
+		var temp = {"children": [],
+					"warriors": [],
+					"farmers": [],
+					"mothers": [],
+					"maidens": [],
+					"elders": []};
+
+		for (var key in temp) {
+			console.log(key);
+			for (var n = 0; n < distribution[key]; n++) {
+				if (key == "mothers")
+					temp[key].push(new Mother());
+				else
+					temp[key].push(new Person(key));
+			}
+		}
+		return temp;
+	}
+
+	popCount() {
+		var count = 0;
+		for (var key in this.population) {
+			count += this.population[key].length;
+		}
+		return count;
 	}
 }
