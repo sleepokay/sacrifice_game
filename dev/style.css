@@ -54,3 +54,8 @@ button {
 	display: flex;
 	justify-content: space-between;
 }
+
+#pop-histogram {
+	width: 130px;
+	height: 200px;
+}
