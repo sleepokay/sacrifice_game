@@ -1,7 +1,7 @@
 var game;
 
 // timing variables
-const delta = 100;
+const delta = 50;
 
 $(document).ready( function() {
 	game = new Game();
@@ -9,13 +9,13 @@ $(document).ready( function() {
 	window.setInterval(function() {
 		draw();
 	}, delta);
-});
 
 function draw() {
 	update();
 
-	var stats = "";
+	drawGods();
 
+	var stats = "";
 	// environment stats
 	stats = "Sun: " + game.sun;
 	stats += "<br>Rain: " + game.rain;
@@ -25,22 +25,44 @@ function draw() {
 	$('#environment').html(stats);
 
 	// time stats
-	stats = "Time Elapsed: " + game.timeElapsed;
-	stats += "<br>Year: " + game.year;
-	stats += "<br>Month " + (game.month+1);
+	stats = "Year: " + game.year;
+	stats += "<br>Month: " + (game.month+1);
 	$('#time').html(stats);
 
 	// population stats
-	stats = "Population: " + game.popCount() + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Grain: " + game.grain;
+	$('#pop-stat').html("Population: " + game.popCount());
 
 	for (var key in game.pop) {
-		stats += "<br>" + key + ": " + game.pop[key].length;
+		$('#' + key + '-stat').html(key + ": " + game.pop[key].length);
 	}
-	$('#population').html(stats);
 
 	// $('#pop-histogram')
+}
+
+function drawGods() {
+	let names = ["#chance", "#wisdom", "#war", "#fertility", "#death"];
+	for (let i = 0; i < names.length; i++) {
+		$(names[i] + ' .name').html(game.gods[i].name);
+		$(names[i] + ' .level').html("level: " + game.gods[i].level);
+		$(names[i] + ' .price').html("price: " + game.gods[i].price);
+		$(names[i] + ' .preferences .child').html("C</br>" + game.gods[i].preferences["child"]);
+		$(names[i] + ' .preferences .adult').html("A</br>" + game.gods[i].preferences["adult"]);
+		$(names[i] + ' .preferences .elder').html("E</br>" + game.gods[i].preferences["elder"]);
+		$(names[i] + ' .preferences .slave').html("S</br>" + game.gods[i].preferences["slave"]);
+	}
 }
 
 function update() {
 	game.update(delta);
 }
+
+$('button').click( function() {
+	console.log($(this).parent().attr('class'));
+
+	// sacrifice button pressed
+	if ($(this).parent().attr('class') == 'sacrifice') {
+
+	}
+});
+
+});

@@ -1,16 +1,18 @@
-const monthLength = 2000; // in real-time units (milliseconds)
+const monthLength = 50; // in real-time units (milliseconds)
 const yearLength = 12; // in months
 
 class Game {
 
 	constructor() {
 
-		// environment & pop
+		// gods
+		this.gods = this.newGods();
+
+		// environment & population
 		this.sun = 0;
 		this.rain = 0;
 		this.chance = 1;
 		this.wisdom = 0.1;
-
 		this.grain = 100;
 		this.pop = this.newPop();
 
@@ -18,7 +20,8 @@ class Game {
 		this.farming = 1;
 		this.war = 1;
 		this.wisdom = 1;
-		this.fertility = 0.05;
+		this.fertility = 0.005;
+		this.mortality = 0.015;
 
 		// time variables
 		this.timeElapsed = 0;
@@ -31,36 +34,41 @@ class Game {
 		this.timeElapsed += delta;
 
 		if (this.timeElapsed % monthLength == 0) {
-			this.updatePopMonth();
+			this.updatemonth();
 			
 			this.month++;
 			this.timeElapsed = 0;
 
 			if (this.month % yearLength == 0) {
-				this.updatePopYear();
+				this.updateYear();
 				this.year++;
 				this.month = 0;
 			}
 		}
 	}
 
-	updatePopMonth() {
+	updatemonth() {
 		for (var key in this.pop) {
+			// for individuals
 			for (var i = 0; i < this.pop[key].length; i++) {
+				// births
+				if (key == "adult") {
+					// give births
+					if (Math.random() < this.fertility)
+						this.pop["child"].push(new Person(0));
+				}
+
+				// random deaths
+				if (Math.random() < this.mortality * (this.pop[key][i].age / 65) )
+					this.pop[key].splice(i, 1);
 
 			}
 
-			if (key == "adult") {
-				// generate children according to birthrate
-				let birth = Math.floor(Math.random() * this.pop[key].length * this.fertility);
-
-				if (birth > 0)
-					this.pop["child"].push(new Person("child", 0));
-			}
+			
 		}
 	}
 
-	updatePopYear() {
+	updateYear() {
 		for (var key in this.pop) {
 			for (var i = 0; i < this.pop[key].length; i++) {
 
@@ -71,10 +79,10 @@ class Game {
 				else {
 					// age person
 					this.pop[key][i].birthday();
-					
+
 					// move to next age group if applicable
-					if (this.pop[key][i].type == "child" && this.pop[key][i].age > 15) {
-						let temp = this.pop[key].splice(i, 1)[0];
+					if (this.pop[key][i].type == "child" && this.pop[key][i].age > 13) {
+						var temp = this.pop[key].splice(i, 1)[0];
 						temp.type = "adult";
 						this.pop["adult"].push(temp);
 					}
@@ -99,13 +107,14 @@ class Game {
 			for (let n = 0; n < distribution[key]; n++) {
 				// age ranges for randomization
 				let range = [];
-				if (this.type == "child")
-					range = [0, 15];
-				else if (this.type == "adult")
-					range = [15, 40];
+				if (key == "child")
+					range = [0, 13];
+				else if (key == "adult")
+					range = [13, 40];
 				else
 					range = [40, 65];
 				let age = Math.floor(Math.random() * (range[1] - range[0]) + range[0]);
+				console.log(age);
 				temp[key].push(new Person(age));
 			}
 		}
@@ -118,5 +127,32 @@ class Game {
 			count += this.pop[key].length;
 		}
 		return count;
+	}
+
+	newGods() {
+		var gods = new Array();
+
+		let chanceGod = new Deity("chance");
+		chanceGod.setPrefs(0, 0.5, 1.5, 1);
+		gods.push(chanceGod);
+
+		let wisdomGod = new Deity("rain & wisdom");
+		wisdomGod.setPrefs(1, 1, 1, 1);
+		gods.push(wisdomGod);
+
+		let warGod = new Deity("sun & war");
+		warGod.setPrefs(0.5, 1, 0, 2);
+		gods.push(warGod);
+
+		let fertilityGod = new Deity("fertility & famine");
+		fertilityGod.setPrefs(2, 1, 0, 1);
+		gods.push(fertilityGod);
+
+		let deathGod = new Deity("death");
+		deathGod.setPrefs(1, 1, 1, 1);
+		gods.push(deathGod);
+
+
+		return gods;
 	}
 }

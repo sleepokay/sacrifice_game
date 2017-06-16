@@ -14,36 +14,92 @@
 <body>
 
 <div id="godpane">
-	<div class="god">Chance &amp; Suffering</br></br>
-		<div class="level">level: 1</div></br>
-		<div class="chance_ascend">[ascend dice]</div></br>
-		<button type="button">sacrifice</button>
+	<div class="god" id="chance">
+		<div class="name"></div></br>
+		<div class="level"></div></br>
+		<div class="price"></div></br>
+		<div class="preferences"><span class="child"></span><span class="adult"></span><span class="elder"></span><span class="slave"></span></div>
 	</div>
-	<div class="god">Rain &amp; Wisdom</br></br>
-		<div class="level">level: 1</div></br>
-		<div class="flood_ascend">[flood level]</div></br>
-		<button type="button">sacrifice</button>
+	
+	<div class="god" id="wisdom">
+		<div class="name"></div></br>
+		<div class="level"></div></br>
+		<div class="price"></div></br>
+		<div class="preferences"><span class="child"></span><span class="adult"></span><span class="elder"></span><span class="slave"></span></div>
 	</div>
-	<div class="god">Sun &amp; War</br></br>
-		<div class="level">level: 1</div></br>
-		<div class="sun_ascend">[conquest map]</div></br>
-		<button type="button">sacrifice</button>
+
+	<div class="god" id="war">
+		<div class="name"></div></br>
+		<div class="level"></div></br>
+		<div class="price"></div></br>
+		<div class="preferences"><span class="child"></span><span class="adult"></span><span class="elder"></span><span class="slave"></span></div>
 	</div>
-	<div class="god">Agriculture &amp; Famine</br></br>
-		<div class="level">level: 1</div></br>
-		<div class="agriculture_ascend">[totem build level]</div></br>
-		<button type="button">sacrifice</button>
+
+	<div class="god" id="fertility">
+		<div class="name"></div></br>
+		<div class="level"></div></br>
+		<div class="price"></div></br>
+		<div class="preferences"><span class="child"></span><span class="adult"></span><span class="elder"></span><span class="slave"></span></div>
 	</div>
-	<div class="god">Death &amp; Mothers</br></br>
-		<div class="level">level: 1</div></br>
-		<div class="death_ascend">[task checklist]</div></br>
-		<button type="button">sacrifice</button>
+
+	<div class="god" id="death">
+		<div class="name"></div></br>
+		<div class="level"></div></br>
+		<div class="price"></div></br>
+		<div class="preferences"><span class="child"></span><span class="adult"></span><span class="elder"></span><span class="slave"></span></div>
 	</div>
 </div>
 
 <div id="main">
 	<div class="main-section" id="environment"></div>
-	<div class="main-section" id="population"><canvas id="pop-overview"></canvas></div>
+	<div class="main-section" id="population">
+		<div id="pop-stat"></div>
+		<div id="child">
+			<div class="stats" id="child-stat"></div>
+			<div class="sacrifice">
+				<button type="button" class="chance-button">chance</button>
+				<button type="button" class="wisdom-button">wisdom</button>
+				<button type="button" class="war-button">war</button>
+				<button type="button" class="fertility-button">fertility</button>
+				<button type="button" class="death-button">death</button>
+			</div>
+		</div>
+
+		<div id="adult">
+			<div class="stats" id="adult-stat"></div>
+			<div class="sacrifice">
+				<button type="button" class="chance-button">chance</button>
+				<button type="button" class="wisdom-button">wisdom</button>
+				<button type="button" class="war-button">war</button>
+				<button type="button" class="fertility-button">fertility</button>
+				<button type="button" class="death-button">death</button>
+			</div>
+		</div>
+
+		<div id="elder">
+			<div class="stats" id="elder-stat"></div>
+			<div class="sacrifice">
+				<button type="button" class="chance-button">chance</button>
+				<button type="button" class="wisdom-button">wisdom</button>
+				<button type="button" class="war-button">war</button>
+				<button type="button" class="fertility-button">fertility</button>
+				<button type="button" class="death-button">death</button>
+			</div>
+		</div>
+
+		<div id="slave">
+			<div class="stats" id="slave-stat"></div>
+			<div class="sacrifice">
+				<button type="button" class="chance-button">chance</button>
+				<button type="button" class="wisdom-button">wisdom</button>
+				<button type="button" class="war-button">war</button>
+				<button type="button" class="fertility-button">fertility</button>
+				<button type="button" class="death-button">death</button>
+			</div>
+		</div>
+
+		<canvas id="pop-overview"></canvas>
+	</div>
 	<div class="main-section" id="time"></div>
 </div>
 
